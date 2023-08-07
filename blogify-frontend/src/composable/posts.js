@@ -1,5 +1,5 @@
 
-import { ref,onBeforeMount} from "vue"
+import { ref} from "vue"
 import axios from "axios";
 
 
@@ -64,7 +64,7 @@ export default function usePosts(){
       };
 
       
-   onBeforeMount(async () => {
+   const getTags = async () => {
     let config = {
       method: 'get',
       url: 'http://127.0.0.1:8000/api/tags',
@@ -80,7 +80,7 @@ export default function usePosts(){
     } catch (error) {
       console.error('Error:', error);
     }
-  });
+  };
 
     return{
         posts,
@@ -88,7 +88,8 @@ export default function usePosts(){
         all_tags,
         getPosts,
         postSubmit,
-        fetchPosts
+        fetchPosts,
+        getTags
 
 
     }

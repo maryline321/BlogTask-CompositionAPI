@@ -37,13 +37,17 @@
 
 
 <script setup>
-import { ref, } from 'vue';
+import { ref} from 'vue';
 import usePosts from '../composable/posts';
 
 const {postSubmit, errors} = usePosts();
+// const {postSubmit, errors, getTags, all_tags} = usePosts();
 
-const all_tags = ref([]);
+// const all_tags = ref([]);
+
 const selectedTags = ref([]);
+
+// onBeforeMount(getTags())
 
 const title = ref('');
 const description = ref('');
