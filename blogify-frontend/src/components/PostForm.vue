@@ -37,24 +37,20 @@
 
 
 <script setup>
-import { ref} from 'vue';
+import { ref, onBeforeMount} from 'vue';
 import usePosts from '../composable/posts';
 
-const {postSubmit, errors} = usePosts();
-// const {postSubmit, errors, getTags, all_tags} = usePosts();
+// const {postSubmit, errors} = usePosts();
+const {postSubmit, errors, getTags, all_tags} = usePosts();
 
-// const all_tags = ref([]);
+
+onBeforeMount(getTags())
 
 const selectedTags = ref([]);
-
-// onBeforeMount(getTags())
-
 const title = ref('');
 const description = ref('');
 const tags = ref('');
 const submitted = ref(false);
-// const errors = ref({});
-
 
 const toggleForm = () => {
   submitted.value = !submitted.value;
