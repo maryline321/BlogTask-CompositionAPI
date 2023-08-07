@@ -6,7 +6,7 @@
         <h2>Create New Post</h2>
 
         <div class="main-block">
-          <form @submit.prevent="postSubmit">
+          <form @submit.prevent="postSubmit(title,description,tags)">
             <div class="form-group">
               <label for="title" class="label">Title</label>
               <input class="input-field" type="text" id="title" v-model="title" placeholder="Enter Title" @click.stop/>
@@ -37,75 +37,20 @@
 
 
 <script setup>
-import { ref, onBeforeMount } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, } from 'vue';
+import usePosts from '../composable/posts';
 
-const router = useRouter();
+const {postSubmit, errors} = usePosts();
+
 const all_tags = ref([]);
-// const val = ref([]);
 const selectedTags = ref([]);
 
 const title = ref('');
 const description = ref('');
 const tags = ref('');
 const submitted = ref(false);
-const errors = ref({});
+// const errors = ref({});
 
-const redirectToPost = () => {
-  router.push('/');
-}
-
-onBeforeMount(async () => {
-  let config = {
-    method: 'get',
-    url: 'http://127.0.0.1:8000/api/tags',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  }
-
-  try {
-    const response = await axios(config);
-
-    all_tags.value = response.data.data;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-});
-
-const postSubmit = async () => {
-  try {
-    let config = {
-      method: 'post',
-      url: 'http://127.0.0.1:8000/api/addpost',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: {
-        title: title.value,
-        description: description.value,
-        tag_id: tags.value
-      }
-    }
-
-    await axios(config);
-
-    redirectToPost();
-
-    submitted.value = true;
-
-    title.value = '';
-    description.value = '';
-    tags.value = '';
-  } catch (error) {
-    console.error('Error:', error.response?.data);
-
-    if (error.response && error.response.status === 422) {
-      errors.value = error.response.data.errors;
-    }
-  }
-};
 
 const toggleForm = () => {
   submitted.value = !submitted.value;

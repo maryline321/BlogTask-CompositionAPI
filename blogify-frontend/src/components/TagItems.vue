@@ -29,31 +29,22 @@
 </template>
 
 <script setup>
-import axios from "axios";
+
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from "vue-router";
 import PostDetails from "./PostDetails.vue";
+import usePosts from '../composable/posts';
+
+const { fetchPosts} = usePosts();
 
 const posts = ref([]);
-// const expandedDescriptions = ref({});
+
+
 const selectedPost = ref(null);
-
-// Assuming the response data is an array of posts
-const fetchPosts = (route) => {
-  axios
-    .get("http://localhost:8000/api" + route)
-    .then((response) => {
-      posts.value = response.data[0].posts;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
 
 const viewPost = (post) => {
   selectedPost.value = post;
-};
+}; 
 
 const closePost = () => {
   selectedPost.value = null;
@@ -65,7 +56,7 @@ const tag_id = ref(tag.value);
 
 onMounted(() => {
   if (tag_id.value) {
-    fetchPosts('/tags/' + tag_id.value);
+    fetchPosts('/tags/' + tag_id.value, posts);
   }
 });
 
